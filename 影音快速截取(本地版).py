@@ -70,7 +70,8 @@ def test():
         print("目前支持剪切MP4,MP3,AVI,MOV,FLV文件")
         input("点击Enter键退出")
         exit()
-    x=input("请输入文件名/番号:")
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    x=input("\n\n请输入文件名/番号:")
     target=filter(x,lis)
     if target.endswith("mp4") or target.endswith("MP4"):
         video=cv2.VideoCapture(f"{target}")
