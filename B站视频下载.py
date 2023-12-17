@@ -9,10 +9,9 @@ def download(url,name):
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
         'referer': f'{url}'
     }
-    res=requests.get(url)
-    html=res.text
-    vido=re.findall('"mimeType":"video/mp4".*?"baseUrl":"(.*?)"',html)
-    audio=re.findall('mimeType":"audio/mp4".*?"baseUrl":"(.*?)"',html)
+    res=requests.get(url,headers=head)
+    vido=re.findall('"mimeType":"video/mp4".*?"baseUrl":"(.*?)"',res.text)
+    audio=re.findall('mimeType":"audio/mp4".*?"baseUrl":"(.*?)"',res.text)
     audio_list=[]
     for i in audio:
         audio_list.append(i)

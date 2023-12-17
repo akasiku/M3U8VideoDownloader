@@ -18,7 +18,7 @@ def settime(x):
         s=str(x%3600%60%60).zfill(2)
         return f"{h}{m}{s}"
 def totime(x):
-    s = re.compile("\d{1,2}:\d{1,2}:\d{1,2}", re.S)
+    s = re.compile(r"\d{1,2}:\d{1,2}:\d{1,2}", re.S)
     res=s.match(x)
     if res != None:
         return s.match(x).group()

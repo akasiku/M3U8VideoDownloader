@@ -24,7 +24,7 @@ def setheader():
             break
         x = input("")
         if x.strip().endswith(":"):
-            key=x.strip()[:-1]
+            headerkey=x.strip()[:-1]
         if x.strip().endswith(":")==False and ": " in x:
             setheader1()
             break
@@ -32,9 +32,9 @@ def setheader():
             s+=1
         else:
             if x.startswith("\"") and x.endswith("\""):
-                header[key] = x[1:-1]
+                header[headerkey] = x[1:-1]
             else:
-                header[key]=x
+                header[headerkey]=x
             s=0
 
 def decryptor(key,video):
@@ -68,7 +68,12 @@ def get_UrlList(url_list,header,verify_flag):
         else:
             li.append(sub_url)
     if "key" in li[0]:
-        key=requests.get(url_list[:url_list.rfind("/")+1]+li[0].split('"')[-2],headers=header,verify=verify_flag).content
+        xx=li[0].split('"')[-2]
+        if xx.startswith("http"):
+            key=requests.get(xx,headers=header,verify=verify_flag).content
+        else:
+            key = requests.get( url_list[:url_list.rfind("/") + 1]+xx, headers=header, verify=verify_flag).content
+
         li=li[1:]
     return li
 
