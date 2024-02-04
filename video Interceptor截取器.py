@@ -96,7 +96,7 @@ def test():
         os.system(f'copy "{target}" "{origin}')
         os.system(f'del "{target}"')
         time.sleep(1)
-        os.system(f'ffmpeg -i "{origin}" -ss {start} -to {end} -codec copy "{target}"')
+        os.system(f'ffmpeg -ss {start} -to {end} -i "{origin}" -codec copy "{target}"')
         print(f'执行命令 ffmpeg -i "{origin}" -ss {start} -to {end} -codec copy "{target}"\n\n')
     except Exception as e:
         print("截取失败,出现以下原因:")
