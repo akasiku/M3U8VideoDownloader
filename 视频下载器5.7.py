@@ -103,6 +103,7 @@ def dwonload_slice(slice_url, slicenum, leasttime,counturls,verify_flag):
     except:
         print(f"第{slicenum}个切片下载失败,正在尝试再次下载...")
         leasttime = leasttime - 1
+        time.sleep(2)
         dwonload_slice(slice_url, slicenum, leasttime,counturls,verify_flag)
 
 def loop(thread_num):
@@ -149,7 +150,7 @@ def loop(thread_num):
         thread_num=50
     with ThreadPoolExecutor(thread_num) as T:
         for i in urls:
-            T.submit(dwonload_slice,slice_url=i,slicenum=slice_num,leasttime=3,counturls=counturls,verify_flag=V_flag)
+            T.submit(dwonload_slice,slice_url=i,slicenum=slice_num,leasttime=5,counturls=counturls,verify_flag=V_flag)
             slice_num+=1
     composite()
     shutil.rmtree(fr"{video_name}切片文件夹")
