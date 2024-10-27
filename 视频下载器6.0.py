@@ -67,6 +67,13 @@ def get_UrlList(url_list,header,verify_flag):
             li.append(newsubrul)
         else:
             li.append(sub_url)
+    if requests.get(li[1],headers=header).status_code!=200:
+        li=[]
+        x = re.finditer(",(?P<url>.*?)#", f, re.S)
+        for i in x:
+            sub_url=i.group("url").strip()
+            newsubrul=url_list[:url_list.find("com")+3]+sub_url
+            li.append(newsubrul)
     if "key" in li[0]:
         xx=li[0].split('"')[-2]
         if xx.startswith("http"):
@@ -105,7 +112,25 @@ def dwonload_slice(slice_url, slicenum, leasttime,counturls,verify_flag):
         leasttime = leasttime - 1
         time.sleep(2)
         dwonload_slice(slice_url, slicenum, leasttime,counturls,verify_flag)
-
+def get_m3u8(main_url,myhead):
+    m3u8 = re.compile("http(?!.*http).*?\.m3u8")
+    res = requests.get(main_url, headers=myhead)
+    content = res.text
+    m3u8list = m3u8.findall(content)
+    res_url=None
+    if m3u8list != None and len(m3u8list)!=0:
+        res_url=str(m3u8list[0]).replace("\\","")
+        abcs = res_url.split("/")
+        prex=abcs[0]+"//"+abcs[2]
+        m3=requests.get(res_url,headers=myhead).text
+        real=m3.split("\n")
+        if (len(real)>10):
+            return res_url
+        for i in real:
+            if "m3u8" in i:
+                res_url=i
+        res_url=prex+res_url
+    return res_url
 def loop(thread_num):
     #获取m3U8视频切片的片段url
     V_flag=True
@@ -161,9 +186,18 @@ while True:
     try:
         print("########################################################################################")
         header = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'}
-        url_list = input("请输入M3U8视频切片链接:")
+        url_list = input("请输入视频url:")
         while(not url_list.startswith("http")):
-            url_list = input("输入有误,再次输入M3U8视频切片链接:")
+            url_list = input("输入有误,再次输入视频链接:")
+        if url_list.endswith("m3u8")==False:
+            url_list=get_m3u8(url_list,header)
+            if url_list == None:
+                print("获取连接失败，请尝试m3u8连接")
+                input()
+                exit()
+            url_list=url_list.replace("\\","")
+            print(url_list)
+            print(f"获取切片连接成功:{url_list}")
         video_name = input("请输入要保存视频的名字:")
         if len(video_name) == 0:
             video_name = str(time.strftime("%Y年%m月%d日%H时%M分%S秒下载的视频",time.localtime()))
@@ -185,4 +219,7 @@ while True:
             if video_name in i:
                 shutil.rmtree(fr"{video_name}切片文件夹")
         print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+
+
 

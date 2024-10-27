@@ -1,10 +1,12 @@
+import ast
 import os
 import re
 import subprocess
 
-def main():
-    url=input("输入YOUTUBE视频的url:")
+import requests
 
+
+def download_youtube(url):
     def print_video_message(text):
         temp=re.compile("    - itag:          (.*?)\n      container:     (.*?)\n      quality:       (.*?)\n      size:          (.*?)M(.*?)\n",re.S)
         alldata=temp.findall(text)
@@ -28,11 +30,3 @@ def main():
     select_quality(url)
     itag=input("输入下载视频的Itag番号:")
     download_video(itag)
-while True:
-    try:
-        print("------------------------------下载YOUTUBE视频----------------------------------")
-        main()
-    except Exception as e:
-        print("似乎出错,错误原因:")
-        print(e)
-    # https: // www.youtube.com / watch?v = GCgvpwLNvtY & ab_channel = LiangRainnerdxddxc

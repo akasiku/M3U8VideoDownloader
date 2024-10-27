@@ -3,7 +3,7 @@ import time
 
 import requests
 import re
-def download(url,name):
+def download_bilibili(url,name):
     head = {
         'origin': 'https://www.bilibili.com',
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
@@ -45,11 +45,3 @@ def download(url,name):
     time.sleep(2)
     os.system(f"del {name}.mp4 {name}.mp3")
     print("合成成功!!!!!!!!!!!!!!!!!!!")
-while True:
-    try:
-        url=input("输入B站视频地址URL:")
-        name=input("输入保存视频的名字:")
-        download(url,name)
-    except Exception as e:
-        print("出现下列错误")
-        print(e)
