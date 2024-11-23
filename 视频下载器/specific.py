@@ -22,4 +22,4 @@ def get_xiaoya(url,head):
         ep=int(ep)
     else:
         return ""
-    return all_line[3][ep].replace('"',"").replace("]","")
+    return all_line[2][ep].replace('"',"").replace("]","")

@@ -10,14 +10,25 @@ def download_bilibili(url,name):
         'referer': f'{url}'
     }
     res=requests.get(url,headers=head)
-    vido=re.findall('"mimeType":"video/mp4".*?"baseUrl":"(.*?)"',res.text)
-    audio=re.findall('mimeType":"audio/mp4".*?"baseUrl":"(.*?)"',res.text)
+    content=res.text
+    vido=re.findall('"mimeType":"video/mp4".*?"baseUrl":"(.*?)"',content)
+    audio=re.findall('mimeType":"audio/mp4".*?"baseUrl":"(.*?)"',content)
+    audio2 = re.findall(r'"audio":\[{"id".*?"baseUrl":"(.*?)"mimeType":"audio/mp4"', content)
+    audio2l = re.findall(r'http.*?"', audio2[0])
     audio_list=[]
     for i in audio:
         audio_list.append(i)
+    if len(audio_list)==0:
+        for i in audio2l:
+            ull = i[:-1]
+            if requests.get(ull, head).status_code==200:
+                audio_list.append(ull)
+                break
     vido_list=[]
     for v in vido:
         vido_list.append(v)
+    print(vido_list[0])
+    print(audio_list[0])
     if len(vido_list)>0:
         with open(f"{name}.mp4","wb") as f1:
             videourl=vido_list[0]
