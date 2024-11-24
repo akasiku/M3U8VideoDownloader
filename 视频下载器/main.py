@@ -1,3 +1,4 @@
+import locale
 import os
 import shutil
 import time
@@ -9,7 +10,7 @@ from download import download_threadpool
 from input_controller import input_url
 from setheader import set_header
 from youtube import download_youtube
-
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 warnings.filterwarnings("ignore")
 V_flag = True
 encry_key="0"
